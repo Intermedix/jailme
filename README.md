@@ -1,11 +1,13 @@
-jailme - a setuid jail_attach command line utility for entering FreeBSD Jails as a specific user
+jailme - a setuid version of jexec to allow normal users access to FreeBSD jails
 
 
 # Origins
 
 The jail system on FreeBSD allows convenient lightweight virtual machines within the FreeBSD operating system.
 
-Some infrastructure deployments have their jails tightly controlled and monitored. Yet would like non-administrative (i.e. application developers) to be able to access the jails so that the infrastructure team doesn't have to hand-hold application upgrades, etc. If a deployment's network infrastructure prevents you from allowing ssh access directly to the jails, you need to be able to shell into a given jail to do administraion and configuration. The [jexec(8)] (https://www.freebsd.org/cgi/man.cgi?query=jexec&apropos=0&sektion=8&manpath=FreeBSD+8.4-RELEASE&arch=default&format=html) program looks like a good solution - execpt it requires root privilidges to run - thus causing a requirement for too much access via sudo. Even with the fine-grained control that sudo gives us, the stock jexec causes the user to become root within the jail, and we don't want that either.
+Some infrastructure deployments have their jails tightly controlled and monitored. Yet they have a need for non-administrative (i.e. application developers) to be able to access the jails - so that the infrastructure team doesn't have to hand-hold application upgrades, etc.
+
+If a deployment's network infrastructure prevents you from allowing ssh access directly to the jails, there needs to be a way to shell into a given jail to do administraion and configuration. The [jexec(8)] (https://www.freebsd.org/cgi/man.cgi?query=jexec&apropos=0&sektion=8&manpath=FreeBSD+8.4-RELEASE&arch=default&format=html) program looks like a good solution - execpt it requires root privilidges to run - thus causing a requirement for too much access via sudo. Even with the fine-grained control that sudo gives you, the stock jexec causes the user to become root within the jail, and we don't want that either.
 
 
 # How is jailme different?
@@ -22,7 +24,7 @@ There is a FreeBSD port you can install: [sysutils/jailme] (http://www.freshport
 Or build it yourself as root,
 
 ```bash
-make install
+$ make install
 ```
 
 
@@ -30,18 +32,37 @@ make install
 
 Usage is identical to [jexec(8)] (https://www.freebsd.org/cgi/man.cgi?query=jexec&apropos=0&sektion=8&manpath=FreeBSD+8.4-RELEASE&arch=default&format=html).
 
+```bash
+$ jailme jid command [...]
+```
+
 
 # Change log
 
-2014-10-28 Update README, build tools, and packaging for migration from CFI People http://people.collaborativefusion.com/wmoran/code/jailme.html to Intermedix Github https://github.com/Intermedix/jailme
+## 0.1.0 (2014-10-28)
 
-2007-03-01 Added text on possible security implications.
+Documentation:
+ - Update README, build tools, and packaging for migration from CFI People http://people.collaborativefusion.com/wmoran/code/jailme.html to Intermedix Github https://github.com/Intermedix/jailme
 
-2007-01-03 This is now part of the FreeBSD ports collection. Check out [sysutils/jailme] (http://www.freshports.org/sysutils/jailme/).
+## 0.1 (2007-03-01)
 
-2007-01-02 Submitted as a port to FreeBSD [ports/107441] (https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=107441)
+Documentation:
+ - Added text on possible security implications.
 
-2006-12-29 Initial public release 
+## 0.1 (2007-01-03)
+
+Availability:
+ - This is now part of the FreeBSD ports collection. Check out [sysutils/jailme] (http://www.freshports.org/sysutils/jailme/).
+
+## 0.1 (2007-01-02)
+
+Availability:
+ - Submitted as a port to FreeBSD [ports/107441] (https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=107441)
+
+## 0.1 (2006-12-29)
+
+Availability:
+ - Initial public release 
 
 
 # Security Concerns
