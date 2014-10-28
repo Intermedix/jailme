@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Bill Moran - Collaborative Fusion, Inc.</title>
+</head>
+<body>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="1"
+ cellspacing="1">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Bill Moran<br>
+Network Engineer<br>
+5849 Forbes Avenue<br>
+Pittsburgh, PA 15217<br>
+      </td>
+      <td style="text-align: center; vertical-align: top;"><a href="../images/cfi_logo_BSD.png"><img
+ alt="Logo" src="../images/cfi_logo_BSD_miniPCF.png"
+ style="width: 368px; height: 115px;" border=0></a><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<hr style="width: 100%; height: 2px;">
+
+<h1>jailme</h1>
+
+<p>The jail system on FreeBSD allows convenient lightweight virtual machines within the FreeBSD
+ operating system.</p>
+
+<p>For our purposes, we have the jails tightly controlled and monitored.  We'd like non-administrative
+(i.e. application developers) to be able to access the jails so that the systems team doesn't have
+to hand-hold application upgrades, etc.  Unfortunatly, our network infrastructure prevents us from
+allowing ssh access directly to the jail systems without jumping through flaming hoops on the policy
+routers.  The jexec program looks like a good solution execpt it requires root privilidges to run,
+thus causing us to allow too much access via sudo.  Even with the fine-grained control that sudo gives
+us, the stock jexec causes the user to become root within the jail, and we don't want that either.</p>
+
+<p>jailme is a modified version of jexec.  It works by being setuid, so that it can execute the
+jail_attach() call as root.  It then tests the user name and user ID of the calling user to ensure
+that they are identical inside the jail to the host system.  This acts as a sanity check.  If
+the sanity check is successful, the user is assigned the appropriate credentials within the jail.</p>
+
+<p>Because of the UID mapping requirement, I doubt this program will be useful to all jail systems,
+but I expect that there will be a subset of system configurations that find this program useful
+for keeping security tight.  In theory, there's no reason it couldn't be part of the base system
+of FreeBSD, as it should not present any security problems on systems not planned to use it.</p>
+
+<p>For now, here's the code: <a href="jailme/jailme-0.1.tar.bz2">jailme-0.1.tar.bz2</a></p>
+
+<p>Untar the archive, and execute <code>make install</code> as root.  Usage is identical to jexec.</p>
+
+<h2>Security Concerns</h2>
+
+<p>If your system is not designed to use jailme, you could be creating security issues by installing
+it.</p>
+
+<p>For example, if you have unpriviledged users on the host operating system, and accidentally create
+a user within a jail that had the same username and UID as the host system user, you could create
+an unintentional security breach.  A specific example is that jailme does not check to see if the
+user has the same group membership in both the jail and the host system, so jailme may allow the
+user more access than intended by giving them more group privilidges within the jail.</p>
+
+<p>I don't believe the risk of such a thing happening is very high.  Also, system administrators
+who are aware of these security concerns can easily audit their systems and ensure they have not
+created such a situation.</p>
+
+<p>If you believe you know of any way in which jailme presents a security issue, please
+<a href='mailto:wmoran@collaborativefusion.com'>contact me</a>.</p>
+
+<ul>
+<li>2007-03-01 <i>Added text on possible security implications.</i>
+<li>2007-01-03 <i>This is now part of the FreeBSD ports collection.  Check out sysutils/jailme.</i>
+<li>2007-01-02 <i>Submitted as a port to FreeBSD
+    <a href='http://www.freebsd.org/cgi/query-pr.cgi?pr=107441'>ports/107441</a></i>
+<li>2006-12-29 <i>Initial public release</i>
+</ul>
+
+<hr style="width: 100%; height: 2px;">
+
+<p><small>All content copyright <a
+ href="http://www.collaborativefusion.com/">Collaborative Fusion, Inc.</a>
+and <a href="../index.html">Bill Moran.</a> All rights reserved.</small></p>
+</body>
+</html>
