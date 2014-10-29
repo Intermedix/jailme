@@ -1,8 +1,0 @@
-language: c
-
-compiler:
-  - clang
-  - gcc
-
-# override Travis CI default ./configure && make && make test
-script: make
