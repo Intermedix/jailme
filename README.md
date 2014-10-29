@@ -1,5 +1,7 @@
 jailme - a setuid version of jexec to allow normal users access to FreeBSD jails
 
+nkiraly/jailme/master Build Status: [![nkiraly/jailme/master Build Status](https://travis-ci.org/nkiraly/jailme.png?branch=master)](https://travis-ci.org/nkiraly/jailme)
+
 
 # Origins
 
