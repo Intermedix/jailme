@@ -52,11 +52,17 @@ main(int argc, char *argv[])
 	int jid, ngroups;
 	uid_t huid;
 	struct passwd *husername, *jusername;
-	gid_t groups[NGROUPS];
+	gid_t *groups = NULL;
 	login_cap_t *lcap;
+	long ngroups_max;
 
 	if (argc < 3)
 		usage();
+
+	ngroups_max = sysconf(_SC_NGROUPS_MAX) + 1;
+	if ((groups = malloc(sizeof(gid_t) * ngroups_max)) == NULL)
+		err(1, "malloc");
+
 	/* Get the current user ID and user name in the host system */
 	huid = getuid();
 	husername = getpwuid(huid);
@@ -72,7 +78,7 @@ main(int argc, char *argv[])
 	lcap = login_getpwclass(jusername);
 	if (lcap == NULL)
 		err(1, "getpwclass: %s", jusername);
-	ngroups = NGROUPS;
+	ngroups = ngroups_max;
 	if (getgrouplist(jusername->pw_name, jusername->pw_gid, groups, &ngroups) != 0)	
 		err(1, "getgrouplist: %s", jusername->pw_name);
 	if (setgroups(ngroups, groups) != 0)
