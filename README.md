@@ -39,10 +39,14 @@ $ jailme jid command [...]
 
 # Change log
 
-## 0.1.1 (active)
+## 0.1.1 (active development)
 
 Bugs:
  - Fix NULL check against lcap data from the jail which was actually setting lcap to NULL. This lines up with similar code in jexec(8). Github PR#1
+ - Fix compile warning and segfault if lcap was actually NULL - can't cast the jusername struct to string output Github PR#2
+
+Enhancements:
+ - Support dynamic maximum number of groups rather than relying on compile-time NGROUPS Github PR#2
 
 ## 0.1.0 (2014-10-28)
 
