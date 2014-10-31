@@ -77,7 +77,7 @@ main(int argc, char *argv[])
 		err(1, "chdir(): /");
 	lcap = login_getpwclass(jusername);
 	if (lcap == NULL)
-		err(1, "getpwclass: %s", jusername);
+		err(1, "getpwclass: %s", jusername->pw_name);
 	ngroups = ngroups_max;
 	if (getgrouplist(jusername->pw_name, jusername->pw_gid, groups, &ngroups) != 0)	
 		err(1, "getgrouplist: %s", jusername->pw_name);
