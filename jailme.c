@@ -70,7 +70,7 @@ main(int argc, char *argv[])
 	if (chdir("/") == -1)
 		err(1, "chdir(): /");
 	lcap = login_getpwclass(jusername);
-	if (lcap = NULL)
+	if (lcap == NULL)
 		err(1, "getpwclass: %s", jusername);
 	ngroups = NGROUPS;
 	if (getgrouplist(jusername->pw_name, jusername->pw_gid, groups, &ngroups) != 0)	
