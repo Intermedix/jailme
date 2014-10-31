@@ -39,6 +39,11 @@ $ jailme jid command [...]
 
 # Change log
 
+## 0.1.1 (active)
+
+Bugs:
+ - Fix NULL check against lcap data from the jail which was actually setting lcap to NULL. This lines up with similar code in jexec(8). Github PR#1
+
 ## 0.1.0 (2014-10-28)
 
 Documentation:
