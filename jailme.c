@@ -34,6 +34,7 @@
 
 #include <sys/param.h>
 #include <sys/jail.h>
+#include <jail.h>
 
 #include <err.h>
 #include <errno.h>
@@ -63,16 +64,23 @@ main(int argc, char *argv[])
 	if ((groups = malloc(sizeof(gid_t) * ngroups_max)) == NULL)
 		err(1, "malloc");
 
+	/* Get the jail ID using jail_getid, which also supports jail names */
+	jid = jail_getid(argv[1]);
+	if (jid < 0)
+		err(1, "%s", jail_errmsg);
+
 	/* Get the current user ID and user name in the host system */
 	huid = getuid();
 	husername = getpwuid(huid);
-	jid = (int)strtol(argv[1], NULL, 10);
+	/* Get the user name in the jail */
 	if (jail_attach(jid) == -1)
 		err(1, "jail_attach(): %d", jid);
-	/* Get the user name in the jail */
 	jusername = getpwuid(huid);
-	if (jusername == NULL || strcmp(husername->pw_name, jusername->pw_name) != 0)
+	if (jusername == NULL)
+		err(1, "UID mapping failed");
+	if (strcmp(husername->pw_name, jusername->pw_name) != 0)
 		err(1, "Username mapping failed");
+	/* Gather additional user info */
 	if (chdir("/") == -1)
 		err(1, "chdir(): /");
 	lcap = login_getpwclass(jusername);
@@ -98,6 +106,6 @@ static void
 usage(void)
 {
 
-	fprintf(stderr, "usage: jailme jid command [...]\n");
+	fprintf(stderr, "usage: jailme jid|jailname command [...]\n");
 	exit(1); 
 }
