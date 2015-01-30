@@ -30,23 +30,27 @@ $ make install
 
 # Usage
 
-Usage is identical to [jexec(8)] (https://www.freebsd.org/cgi/man.cgi?query=jexec&apropos=0&sektion=8&manpath=FreeBSD+8.4-RELEASE&arch=default&format=html).
+Usage is similar to [jexec(8)] (https://www.freebsd.org/cgi/man.cgi?query=jexec&apropos=0&sektion=8&manpath=FreeBSD+10.1-RELEASE&arch=default&format=html).
 
 ```bash
-$ jailme jid command [...]
+$ jailme jid|jailname command [...]
 ```
 
 
 # Change log
 
-## 0.1.1 (active development)
+## 0.2.0 (2014-01-30)
+
+Initially tracked as milestone 0.1.1
 
 Bugs:
- - Fix NULL check against lcap data from the jail which was actually setting lcap to NULL. This lines up with similar code in jexec(8). Github PR#1
- - Fix compile warning and segfault if lcap was actually NULL - can't cast the jusername struct to string output Github PR#2
+ - Fix NULL check against lcap data from the jail which was actually setting lcap to NULL. This lines up with similar code in jexec(8). Github PR #1
+ - Fix compile warning and segfault if lcap was actually NULL - can't cast the jusername struct to string output Github PR #2
 
 Enhancements:
- - Support dynamic maximum number of groups rather than relying on compile-time NGROUPS Github PR#2
+ - Support dynamic maximum number of groups rather than relying on compile-time NGROUPS Github PR #2
+ - Support specify target jail by jailname or jail ID through use of libjail jail_get_id() Github PR #3
+ - Return more specific details when username/UID mapping into jail fails Github PR #3
 
 ## 0.1.0 (2014-10-28)
 
@@ -78,8 +82,8 @@ Availability:
 
 If your system is not designed to use jailme, you could be creating security issues by installing it.
 
-For example, if you have unpriviledged users on the host operating system, and accidentally create a user within a jail that had the same username and UID as the host system user, you could create an unintentional security breach. A specific example is that jailme does not check to see if the user has the same group membership in both the jail and the host system, so jailme may allow the user more access than intended by giving them more group privilidges within the jail.
+For example, if you have unprivileged users on the host operating system, and accidentally create a user within a jail that had the same username and UID as the host system user, you could create an unintentional security breach. A specific example is that jailme does not check to see if the user has the same group membership in both the jail and the host system, so jailme may allow the user more access than intended by giving them more group privilidges within the jail.
 
 I don't believe the risk of such a thing happening is very high. Also, system administrators who are aware of these security concerns can easily audit their systems and ensure they have not created such a situation.
 
-If you believe you know of any way in which jailme presents a security issue, please contact me.
+If you believe you know of any way in which jailme presents a security issue, please [report it] (https://github.com/Intermedix/jailme/issues/new).

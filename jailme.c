@@ -1,7 +1,8 @@
 /*-
  * Copyright (c) 2003 Mike Barcroft <mike@FreeBSD.org>
  * Copyright (c) 2007 Bill Moran/Collaborative Fusion
- * Copyright (c) 2014 Nicholas Kiraly/Intermedix
+ * Copyright (c) 2015 Nicholas Kiraly/Intermedix
+ * Copyright (c) 2015 Steve Polyack/Intermedix
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
