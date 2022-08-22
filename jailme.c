@@ -75,20 +75,20 @@ main(int argc, char *argv[])
 	husername = getpwuid(huid);
 	/* Get the user name in the jail */
 	if (jail_attach(jid) == -1)
-		err(1, "jail_attach(): %d", jid);
+		err(1, "jail_attach: %d", jid);
 	jusername = getpwuid(huid);
 	if (jusername == NULL)
 		err(1, "UID mapping failed");
 	if (strcmp(husername->pw_name, jusername->pw_name) != 0)
 		err(1, "Username mapping failed");
 	/* Gather additional user info */
-	if (chdir("/") == -1)
-		err(1, "chdir(): /");
+	if (chdir(jusername->pw_dir) == -1)
+		err(1, "chdir: %s", jusername->pw_dir);
 	lcap = login_getpwclass(jusername);
 	if (lcap == NULL)
 		err(1, "getpwclass: %s", jusername->pw_name);
 	ngroups = ngroups_max;
-	if (getgrouplist(jusername->pw_name, jusername->pw_gid, groups, &ngroups) != 0)	
+	if (getgrouplist(jusername->pw_name, jusername->pw_gid, groups, &ngroups) != 0)
 		err(1, "getgrouplist: %s", jusername->pw_name);
 	if (setgroups(ngroups, groups) != 0)
 		err(1, "setgroups");
@@ -99,7 +99,7 @@ main(int argc, char *argv[])
 		err(1, "setusercontext");
 	login_close(lcap);
 	if (execvp(argv[2], argv + 2) == -1)
-		err(1, "execvp(): %s", argv[2]);
+		err(1, "execvp: %s", argv[2]);
 	exit(0);
 }
 
@@ -108,5 +108,5 @@ usage(void)
 {
 
 	fprintf(stderr, "usage: jailme jid|jailname command [...]\n");
-	exit(1); 
+	exit(1);
 }
